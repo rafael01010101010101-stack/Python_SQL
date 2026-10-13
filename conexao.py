@@ -42,7 +42,11 @@ while True:
     print("27 - Cadastrar disciplinas")
     print("28 - Alterar disciplinas")
     print("29 - Excluir disciplinas")
-    print("40 - Sair")
+    print("30 - Consultar notas")
+    print("31 - Cadastrar notas")
+    print("32 - Alterar notas")
+    print("33 - Excluir notas")
+    print("60 - Sair")
 
     opcao = int(input("Escolha uma opção: "))
 
@@ -690,7 +694,7 @@ while True:
             print("Disciplina alterada com sucesso!")
         case 29:
             print("\n")
-            print("Você escolheu excluir uma disciplina!")
+            print("Você escolheu excluir uma disciplina!\n")
             id = int(input("Informe o ID da disciplina: "))
             while True:
                 cursor.execute("select id from disciplinas where id = ?", (id, ))
@@ -702,7 +706,110 @@ while True:
             cursor.execute("delete from disciplinas where id = ?", (id))
             conexao.commit()
             print("Disciplina excluída com sucesso!")
-        case 40:
+        case 30:
+            print("\n")
+            print("Você escolheu consultar uma nota!\n")
+            cursor.execute("select * from notas")
+            resultado = cursor.fetchall()
+            for notas in resultado:
+                print(notas)
+        case 31:
+            print("\n")
+            print("Você escolheu cadastrar uma nota!\n")
+
+            aluno_id = int(input("Informe o ID do aluno: "))
+            while True:
+                cursor.execute("select id from alunos where id = ?", (aluno_id, ))
+                if cursor.fetchone():
+                    break
+                print("Aluno não encontrado!")
+                aluno_id = int(input("Informe o ID de um aluno existente: "))
+            print("\n")
+
+            disciplina_id = int(input("Informe o ID da disciplina: "))
+            while True:
+                cursor.execute("select id from disciplinas where id = ?", (disciplina_id, ))
+                if cursor.fetchone():
+                    break
+                print("Disciplina não encontrada!")
+                disciplina_id = int(input("Informe o ID de uma disciplina existente: "))
+            print("\n")
+
+            docentes_id = int(input("Informe o ID do docente: "))
+            while True:
+                cursor.execute("select id from docentes where id = ?", (docentes_id, ))
+                if cursor.fetchone():
+                    break
+                print("Docente não encontrado!")
+                docentes_id = int(input("Informe o ID de um docente existente: "))
+            print("\n")
+
+            notas = float(input("Informe a nota do aluno: "))
+
+            cursor.execute("""insert into notas (aluno_id, disciplina_id, docente_id, nota) values (?,?,?,?)
+                """, (aluno_id, disciplina_id, docentes_id, notas))
+            conexao.commit()
+            print("Nota cadastrada com sucesso!")
+        case 32:
+            print("\n")
+            print("Você escolheu alterar uma nota!\n")
+
+            id = int(input("Informe o ID da nota: "))
+            while True:
+                cursor.execute("select id from notas where id = ?", (id, ))
+                if cursor.fetchone():
+                    break
+                print("Nota não encontrada!")
+                id = int(input("Informe o ID de uma nota existente: "))
+            print("\n")
+
+            aluno_id = int(input("Informe o novo ID do aluno: "))
+            while True:
+                cursor.execute("select id from alunos where id = ?", (aluno_id, ))
+                if cursor.fetchone():
+                    break
+                print("Aluno não encontrado!")
+                aluno_id = int(input("Informe o novo ID de um aluno existente: "))
+            print("\n")
+
+            disciplina_id = int(input("Informe novo ID da disciplina: "))
+            while True:
+                cursor.execute("select id from disciplinas where id = ?", (disciplina_id, ))
+                if cursor.fetchone():
+                    break
+                print("Disciplina não encontrada!")
+                disciplina_id = int(input("Informe o novo ID de uma disciplina existente: "))
+
+            docentes_id = int(input("Informe o novo ID do docente: "))
+            while True:
+                cursor.execute("select id from docentes where id = ?", (docentes_id, ))
+                if cursor.fetchone():
+                    break
+                print("Docente não encontrado!")
+                docentes_id = int(input("Informe o novo ID de um docente existente: "))
+
+            notas = float(input("Informe a nova nota: "))
+
+            cursor.execute("""update notas set aluno_id = ?, disciplina_id = ?, docente_id = ?, nota = ? where id = ?
+                """, (aluno_id, disciplina_id, docentes_id, notas, id))
+            conexao.commit()
+            print("Nota alterada com sucesso!")
+        case 33:
+            print("\n")
+            print("Você escolheu excluir uma nota!\n")
+            id = int(input("Informe o ID da nota: "))
+            while True:
+                cursor.execute("select id from notas where id = ?", (id, ))
+                if cursor.fetchone():
+                    break
+                print("Nota não encontrada!")
+                id = int(input("Informe o ID de uma nota existente: "))
+            print("\n")
+
+            cursor.execute("delete from notas where id = ?", id)
+            conexao.commit()
+            print("Nota excluída com sucesso!")
+        case 60:
             print("Até logo...")
             break
         case _:
