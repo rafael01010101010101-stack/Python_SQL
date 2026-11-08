@@ -46,7 +46,23 @@ while True:
     print("31 - Cadastrar notas")
     print("32 - Alterar notas")
     print("33 - Excluir notas")
-    print("60 - Sair")
+    print("34 - Consultar N-N aluno com curso")
+    print("35 - Cadastrar N-N aluno com curso")
+    print("36 - Alterar N-N aluno com curso")
+    print("37 - Excluir N-N aluno com curso")
+    print("38 - Consultar N-N funcionarios com salas")
+    print("39 - Cadastrar N-N funcionarios com salas")
+    print("40 - Alterar N-N funcionarios com salas")
+    print("41 - Excluir N-N funcionarios com salas")
+    print("42 - Consultar N-N docentes com salas")
+    print("43 - Cadastrar N-N docentes com salas")
+    print("44 - Alterar N-N docentes com salas")
+    print("45 - Excluir N-N docentes com salas")
+    print("46 - Consultar matricula")
+    print("47 - Cadastrar matricula")
+    print("48 - Alterar matricula")
+    print("49 - Excluir matricula")
+    print("50 - Sair")
 
     opcao = int(input("Escolha uma opção: "))
 
@@ -809,8 +825,263 @@ while True:
             cursor.execute("delete from notas where id = ?", id)
             conexao.commit()
             print("Nota excluída com sucesso!")
+        case 34:
+            print("\n")
+            print("Você escolheu consultar os dados da tabela N-N de aluno com curso!\n")
+            cursor.execute("select * from alunos_cursos")
+            resultado = cursor.fetchall()
+            for alunos_cursos in resultado:
+                print(alunos_cursos)
+        case 35:
+            print("\n")
+            print("Você escolheu fazer uma inserção na tabela N-N de aluno com curso!\n")
+            aluno_id = int(input("Informe o ID do aluno: "))
+            while True:
+                cursor.execute("select id from alunos where id = ?", (aluno_id, ))
+                if cursor.fetchone():
+                    break
+                print("Aluno não encontrado!")
+                aluno_id = int(input("Informe o ID de um aluno existente: "))
+            print("\n")
+            curso_id = int(input("Informe o ID do curso: "))
+            while True:
+                cursor.execute("select id from cursos where id = ?", (curso_id, ))
+                if cursor.fetchone():
+                    break
+                print("Curso não encontrado!")
+                curso_id = int(input("Informe o ID de um curso existente: "))
+            print("\n")
+            cursor.execute("""insert into alunos_cursos (aluno_id, curso_id) values (?, ?)""", (aluno_id, curso_id))
+            conexao.commit()
+            print("Inserção feita com sucesso!")
+        case 36:
+            print("\n")
+            print("Você escolheu alterar a tabela N-N aluno com curso!\n")
+            id = int(input("Informe o ID da tabela N-N de aluno com curso: "))
+            while True:
+                cursor.execute("select id from alunos_cursos where id = ?", (id, ))
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                id = int(input("Informe o ID existente da tabela N-N de aluno com curso: "))
+            print("\n")
+            aluno_id = int(input("Informe o ID do aluno: "))
+            while True:
+                cursor.execute("select id from alunos where id = ?", (aluno_id, ))
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                aluno_id = int(input("Informe o ID de um aluno existente: "))
+            print("\n")
+            curso_id = int(input("Informe o ID do curso: "))
+            while True:
+                cursor.execute("select id from cursos where id = ?", (curso_id, ))
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                curso_id = int(input("Informe o ID de um curso existente: "))
+            print("\n")
+
+            cursor.execute("""update alunos_cursos set aluno_id = ?, curso_id = ? where id = ?""", (aluno_id, curso_id, id))
+            conexao.commit()
+            print("Atualizado com sucesso!")
+        case 37:
+            print("\n")
+            print("Você escolheu realizar um delete na tabela N-N de aluno com curso!\n")
+            id = int(input("Informe o ID: "))
+            while True:
+                cursor.execute("select id from alunos_cursos where id = ?", (id, ))
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                id = int(input("Informe um ID existente: "))
+            print("\n")
+            cursor.execute("delete from alunos_cursos where id = ?", (id))
+            conexao.commit()
+            print("Delete efetuado com sucesso!")
+        case 38:
+            print("\n")
+            print("Você escolheu consultar os dados da tabela N-N de funcionarios com salas!\n")
+
+            cursor.execute("select * from funcionarios_salas")
+            resultado = cursor.fetchall()
+
+            for funcionarios_salas in resultado:
+                print(funcionarios_salas)
+        case 39:
+            print("\n")
+            print("Você escolheu cadastrar dados na tabela N-N de funcionarios com salas!\n")
+
+            funcionario_id = int(input("Informe o ID do funcionario: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from funcionarios where id = ?", funcionario_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhum funcionario com esse ID foi encontrado!")
+                funcionario_id = int(input("Informe um funcionario com um ID existente: "))
+            print("\n")
+
+            sala_id = int(input("Informe o ID da sala: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from salas where id = ?", sala_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhuma sala com esse ID foi encontrado!")
+                sala_id = int(input("Informe uma sala com um ID existente: "))
+            print("\n")
+
+            cursor.execute("""insert into funcionarios_salas (funcionario_id, sala_id) values (?, ?)
+                """, (funcionario_id, sala_id))
+            conexao.commit()
+            print("N-N de funcionario com salas cadastrado com sucesso!")
+        case 40:
+            print("\n")
+            print("Você escolheu alterar um dado da tabela N-N de funcionarios com salas")
+
+            id = int(input("Informe o ID da tabela: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from funcionarios_salas where id = ?", id)
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                id = int(input("Informe um ID existente da tabela funcionarios_salas: "))
+            print("\n")
+
+            funcionario_id = int(input("Informe o novo ID do funcionario: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from funcionarios where id = ?", funcionario_id)
+                if cursor.fetchone():
+                    break
+                print("Funcionario não encontrado!")
+                funcionario_id = int(input("Informe o novo ID de um funcionario existente: "))
+            print("\n")
+
+            sala_id = int(input("Informe o novo ID da sala: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from salas where id = ?", sala_id)
+                if cursor.fetchone():
+                    break
+                print("Sala não encontrada!")
+                sala_id = int(input("Informe o novo ID de uma sala existente: "))
+            print("\n")
+
+            cursor.execute("""update funcionarios_salas set funcionario_id = ?, sala_id = ? where id = ?
+                """, (funcionario_id, sala_id, id))
+            conexao.commit()
+            print("N-N de funcionario com salas atualizado com sucesso!")
+        case 41:
+            print("\n")
+            print("Você escolheu excluir um dado da tabela N-N de funcionario com salas!\n")
+
+            id = int(input("Informe o ID que deseja deletar: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from funcionarios_salas where id = ?", id)
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                id = int(input("Informe um ID da tabela funcionarios_salas existente: "))
+            print("\n")
+
+            cursor.execute("delete from funcionarios_salas where id = ?", id)
+            conexao.commit()
+            print("Exclusão efetuada com sucesso!")
+        case 42:
+            print("\n")
+            print("Você escolheu consultar os dados da tabela N-N de docentes com salas!\n")
+            cursor.execute("select * from docentes_salas")
+            resultado = cursor.fetchall()
+            for docentes_salas in resultado:
+                print(docentes_salas)
+        case 43:
+            print("\n")
+            print("Você escolheu cadastrar um dado na tabela N-N de docentes com salas!\n")
+
+            docente_id = int(input(("Informe o ID do docente: ")))
+            while True:
+                print("\n")
+                cursor.execute("select id from docentes where id = ?", docente_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhum docente encontrado!")
+                docente_id = int(input("Informe o ID de um docente existente: "))
+            print("\n")
+
+            sala_id = int(input("Informe o ID da sala: "))
+            while True: 
+                print("\n")
+                cursor.execute("select id from salas where id = ?", sala_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhuma sala foi encontrada!")
+                sala_id = int(input("Informe o ID de uma sala existente: "))
+            print("\n")
+
+            cursor.execute("""insert into docentes_salas (docente_id, sala_id) values (?, ?)
+                """, (docente_id, sala_id))
+            conexao.commit()
+            print("Inserção efetuada com sucesso!")
+        case 44:
+            print("\n")
+            print("Você escolheu alterar um dado da tabela N-N de docente com salas!\n")
+
+            id = int(input("Informe o ID da tabela que deseja aplicar a alteração: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from docentes_salas where id = ?", id)
+                if cursor.fetchone():
+                    break
+                print("ID não encontrado!")
+                id = int(input("Informe um ID existente que deseja aplicar a alteração: "))
+            print("\n")
+
+            docente_id = int(input("Informe o novo ID do docente: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from docentes where id = ?", docente_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhum docente com esse ID foi encontrado!")
+                docente_id = int(input("Informe o novo ID existente do docente: "))
+            print("\n")
+
+            sala_id = int(input("Informe o novo ID da sala: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from salas where id = ?", sala_id)
+                if cursor.fetchone():
+                    break
+                print("Nenhuma sala foi encontrada!")
+                sala_id = int(input("Informe o novo ID existente da sala: "))
+            print("\n")
+
+            cursor.execute("""update docentes_salas set docente_id = ?, sala_id = ? where id = ?""", (docente_id, sala_id, id))
+            conexao.commit()
+            print("Alteração afetuada com sucesso!")
+        case 45:
+            print("\n")
+            print("Você escolheu excluir um dado da tabela N-N docentes com salas!\n")
+
+            id = int(input("Informe o ID que deseja excluir: "))
+            while True:
+                print("\n")
+                cursor.execute("select id from docentes_salas where id = ?", id)
+                if cursor.fetchone():
+                    break
+                print("ID não econtrado!")
+                id = int(input("Informe um ID existente: "))
+            print("\n")
+
+            cursor.execute("delete from docentes_salas where id = ?", id)
+            conexao.commit()
+            print("Exclusão efetuada com sucesso!")
         case 60:
             print("Até logo...")
             break
         case _:
-            print("Opção inválida")
+            print("Informe um opção valída!")
