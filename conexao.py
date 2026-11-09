@@ -58,11 +58,7 @@ while True:
     print("43 - Cadastrar N-N docentes com salas")
     print("44 - Alterar N-N docentes com salas")
     print("45 - Excluir N-N docentes com salas")
-    print("46 - Consultar matricula")
-    print("47 - Cadastrar matricula")
-    print("48 - Alterar matricula")
-    print("49 - Excluir matricula")
-    print("50 - Sair")
+    print("46 - Sair")
 
     opcao = int(input("Escolha uma opção: "))
 
@@ -1080,7 +1076,7 @@ while True:
             cursor.execute("delete from docentes_salas where id = ?", id)
             conexao.commit()
             print("Exclusão efetuada com sucesso!")
-        case 60:
+        case 46:
             print("Até logo...")
             break
         case _:
